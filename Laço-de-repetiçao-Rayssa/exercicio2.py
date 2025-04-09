@@ -4,7 +4,7 @@ num = input("Digite um número inteiro natural: ")
 contador = 1
 soma = 1
 
-valido = bool(re.fullmatch(r"[0-9]", num))
+valido = bool(re.fullmatch(r"[0-9]+", num))
 
 if valido == True:
     num = int(num)
