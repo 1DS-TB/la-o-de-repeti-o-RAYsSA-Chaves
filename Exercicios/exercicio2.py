@@ -15,6 +15,6 @@ if valido == True:
     while contador != num:
         contador += 1
         soma = soma+contador
-    print(f"A soma de todos os números de 1 a {num} é: {soma}")
+    print(soma)
 else:
-    print("Inválido")
+    print("INVALIDO")
