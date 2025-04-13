@@ -5,19 +5,16 @@
 import re
 
 num = input("Digite um número inteiro positivo: ")
-contador = 1
-soma = 1
+contador = 0
+soma = 0
 
 valido = bool(re.fullmatch(r"[0-9]+", num))
 
 if valido == True:
     num = int(num)
-    if num > 0:
-        while contador != num:
-            contador += 1
-            soma = soma+contador
-        print(soma)
-    else:
-        print("INVALIDO ")
+    while contador != num:
+        soma += num
+        num -= 1
+    print(soma)
 else:
     print("INVALIDO")
