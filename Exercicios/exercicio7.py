@@ -14,9 +14,9 @@ valido = bool(re.fullmatch(r"[0-9]+", n))
 
 if valido:
     n = int(n)
-    for a in range(n):
+    for a in range(1, n+1):
         for b in range(a):
             print("*", end="")   #no final não terá nada, nem uma quabra de linha
         print()   #quando acabar de imprimir os *, vai pular uma linha
 else:
-    print("Inválido")
+    print("INVALIDO")

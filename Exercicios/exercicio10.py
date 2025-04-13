@@ -27,27 +27,24 @@ n2 = input("Digite em que número o intervalo terminará: ")
 valido1 = bool(re.fullmatch(r"[0-9]+", n1))
 valido2 = bool(re.fullmatch(r"[0-9]+", n2))
 
-if valido1 == False:
-    print("Inválido")
+if valido1 == False or valido2 == False:
+    print("INVALIDO")
 else:
-    if valido2 == False:
-        print("Inválido")
-    else:
-        #Criando o intervalo e repetição para verificar os números dentro do intervalo:
-        n1, n2 = int(n1), int(n2)
-        for i in range(n1, n2+1):
-            #Medindo o número original:
-            qtd_digitos = len(str(i))
-            #Calculando o quadrado:
-            quadrado = i**2
-            #Separando os dígitos do número ao quadrado:
-            quadrado_str = str(quadrado).zfill(qtd_digitos*2)   #se a string não tiver pelo menos o dobro de dígidos do número original, ele vai completar com zeros à esquerda (resolve a questão do 1, 2 e 3 que, mesmo ao quadrado, só tem 1 dígito)
-            direita = quadrado_str[:qtd_digitos]
-            esquerda = quadrado_str[qtd_digitos:]
-            #Condição da esquerda = 0:
-            esquerda_invalida = bool(re.fullmatch(r"[0]+", esquerda))
-            if esquerda_invalida == False:
-                direita, esquerda = int(direita), int(esquerda)
-                if direita + esquerda == i:
-                    kaprekar += f"{i}, "
-        print(f"Números kaprekar entre {n1} e {n2}: {kaprekar.rstrip(", ")}")
+    #Criando o intervalo e repetição para verificar os números dentro do intervalo:
+    n1, n2 = int(n1), int(n2)
+    for i in range(n1, n2+1):
+        #Medindo o número original:
+        qtd_digitos = len(str(i))
+        #Calculando o quadrado:
+        quadrado = i**2
+        #Separando os dígitos do número ao quadrado:
+        quadrado_str = str(quadrado).zfill(qtd_digitos*2)   #se a string não tiver pelo menos o dobro de dígidos do número original, ele vai completar com zeros à esquerda (resolve a questão do 1, 2 e 3 que, mesmo ao quadrado, só tem 1 dígito)
+        direita = quadrado_str[:qtd_digitos]
+        esquerda = quadrado_str[qtd_digitos:]
+        #Condição da esquerda = 0:
+        esquerda_invalida = bool(re.fullmatch(r"[0]+", esquerda))
+        if esquerda_invalida == False:
+            direita, esquerda = int(direita), int(esquerda)
+            if direita + esquerda == i:
+                kaprekar += f"{i}, "
+    print(kaprekar.rstrip(", "))

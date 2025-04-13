@@ -9,14 +9,12 @@ import re
 N = input("Digite um número inteiro positivo: ")
 valido = bool(re.fullmatch(r"[0-9]+", N))
 resultado = 0
-serie = ""
 
 if valido:
     N = int(N)
     for i in range(1, N+1):
         resultado += 1/i
         serie += f"1/{i} + "
-    serie = serie.rstrip("+ ")
-    print(f"{serie} = {resultado:.02f}")
+    print(f"{resultado:.02f}")
 else:
-    print("Inválido")
+    print("INVALIDO")

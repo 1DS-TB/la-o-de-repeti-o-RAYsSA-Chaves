@@ -13,7 +13,7 @@ resultado = b
 sequencia = ""
 
 if valido == False:
-    print("Inválido")
+    print("INVALIDO")
 else:
     n = int(n)
     for i in range(n):
@@ -22,4 +22,4 @@ else:
         b = resultado
         resultado = a + b
     sequencia = sequencia.rstrip(", ")   #retira a "," do final da string
-    print(f"{n} primeiros termos da sequência de Fibonacci: {sequencia}")
+    print(sequencia)

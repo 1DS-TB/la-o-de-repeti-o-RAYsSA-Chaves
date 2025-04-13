@@ -11,4 +11,4 @@ for n in range(1, 1001):
     if soma == n:
         perfeitos += f"{n}, "
 perfeitos = perfeitos.rstrip(", ")
-print(f"Números perfeitos de 1 a 1000: {perfeitos}")
+print(perfeitos)

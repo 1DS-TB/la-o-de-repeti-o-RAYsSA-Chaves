@@ -13,4 +13,4 @@ if valido == True:
         tabuada = n*contador
         print(f"{n} x {contador} = {tabuada}")
 else:
-    print("Inválido")
+    print("INVALIDO")
