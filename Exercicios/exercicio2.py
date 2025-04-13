@@ -12,9 +12,12 @@ valido = bool(re.fullmatch(r"[0-9]+", num))
 
 if valido == True:
     num = int(num)
-    while contador != num:
-        contador += 1
-        soma = soma+contador
-    print(soma)
+    if num > 0:
+        while contador != num:
+            contador += 1
+            soma = soma+contador
+        print(soma)
+    else:
+        print("INVALIDO ")
 else:
     print("INVALIDO")
