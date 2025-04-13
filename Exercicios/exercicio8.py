@@ -14,7 +14,6 @@ if valido:
     N = int(N)
     for i in range(1, N+1):
         resultado += 1/i
-        serie += f"1/{i} + "
     print(f"{resultado:.02f}")
 else:
     print("INVALIDO")

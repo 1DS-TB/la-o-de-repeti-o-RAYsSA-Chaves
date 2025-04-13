@@ -12,7 +12,7 @@ else:
     num = int(num)
     divisores = 0
     if num <= 1:
-        print(f"{num} é não primo")
+        print(f"{num} não é primo")
     else: 
         for i in range(2,num):
             if num % i == 0:
