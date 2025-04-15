@@ -5,7 +5,7 @@ import re
 
 n = input("Digite um número inteiro: ")
 
-valido = bool(re.fullmatch(r"[-]?\d+", n))  #negativo é opcional e pode ter mais de um dígito
+valido = bool(re.fullmatch(r"[0-9]+", n))  #negativo é opcional e pode ter mais de um dígito
 
 if valido == True:
     n = int(n)
