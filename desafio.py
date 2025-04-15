@@ -59,6 +59,7 @@ while turno > 0:
         sob_veneno = False  # status do efeito do veneno
         sob_bf = False  #status do efeito do buffer
         sob_tl = False
+        aC_usado = False  #se o acerto de cache já foi usado
 
         turnos_Spoder = random.randint(5, 7)  # o super poder não poderá ser usado vezes seguidas e nem no início
 
@@ -126,7 +127,7 @@ while turno > 0:
                             lista_açoes1.remove("[5] Super chamado")
                             
                     if hp1 < hp_maximo*0.25:
-                        if aC_status == False:
+                        if aC_usado == False:
                             if "[4] Acerto de Cache" not in lista_efeitos:
                                 lista_efeitos.append("[4] Acerto de Cache")
                                 aC_status = True
@@ -308,9 +309,8 @@ while turno > 0:
                                 turno += 1
                         # Se escolher acerto de cache:
                         elif efeito == "4":
-                            if hp1 < hp_maximo*0.25:
-                                if aC_status:
-                                    aC_status = False
+                            if aC_usado == False:
+                                if aC_usado = True
                                     lista_efeitos.remove("[4] Acerto de Cache")
                                     vida_rec = int(hp_maximo*0.30)
                                     hp1 += vida_rec
@@ -319,12 +319,12 @@ while turno > 0:
                                     vez = pc
                                     turno += 1
                                 else:
-                                    print("Acerto de Cache já foi usado. Perdeu a vez.")
-                                    print()
-                                    vez = pc
-                                    turno += 1
+                                    print(f"Acerto de Cache só estará disponível quando seu HP for {hp_maximo*0.25:.0f}")
                             else:
-                                print("Acerto de Cache só pode ser usado quando sua vida for")
+                                print("Acerto de Cache já foi usado. Perdeu a vez.")
+                                print()
+                                vez = pc
+                                turno += 1
 
                 # Se a vez for do pc:
                 else:
