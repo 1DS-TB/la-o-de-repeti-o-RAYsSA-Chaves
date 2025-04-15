@@ -4,7 +4,7 @@
 import re
 
 num = input("Digite um número: ")
-valido = bool(re.fullmatch(r"[-]?\d+", num))
+valido = bool(re.fullmatch(r"[0-9]+", num))
 
 if valido == False:
     print("INVALIDO")
