@@ -42,10 +42,21 @@ while turno > 0:
         
         #Status dos itens especiais (disponível)
         pveneno_status1 = True
-        pcura1 = True
-        Schamado = True
-    
-        sob_veneno = False  #status do efeito 
+        pcura_status1 = True
+        Schamado_status1 = True
+        Spoder_status1 = False
+
+        sob_veneno = False  #status do efeito do veneno 
+
+        turnos_Spoder = random.randint(5, 7)  #o super poder não poderá ser usado vezes seguidas e nem no início
+
+        #Sorteando turno para acontecer um buffer:
+        buffer_turno = random.randint(5, 9)
+        ativar_buffer_jgd = False
+        ativar_buffer_pc = False
+
+        #Sorteando turno para acontecer um loop:
+        loop_turno = random.randint(8, )
        
         #Perguntar se vai jogar com alguém ou contra o computador e validar a escolha:
         modo = input("[1] Solo  [2] Multipleyer\n")
@@ -65,15 +76,33 @@ while turno > 0:
             print(f"{jogador} vs {pc}")
             print(f"---------- {jogador} ----------\nHP: {hp1}\nAtaque: {ataque1}\nDefesa: {defesa1}\n")
             print(f"---------- {pc} ----------\nHP: {hp2}\nAtaque: {ataque2}\nDefesa: {defesa2}")
-
-            #Definindo de quem será a vez e dano de cada um:
-            vez = jogador
+            
+            vez = jogador  #definindo de quem será a vez:
             while hp1 > 0 and hp2 > 0:
+
+                #Verificando se alguém caiu no buffer:
+                if turno == buffer_turno:
+                    if vez == jogador:
+                        ativar_buffer_jgd = True
+                    else:
+                        ativar_buffer_pc = True
+                    buffer_fim = turno + 3
+
                 #se a vez for do jogador:
                 if vez == jogador:
 
                     #Criando efeito de crítico:
                     critico = random.random() < 0.10  #escolhe um número decimal aleatório entre 0.0 e 1.0
+
+                    #Habilitando/desabilitando o super poder:
+                    if turno % turnos_Spoder == 0:
+                        Spoder_status1 = True
+                        if "[6] Super poder" not in lista_açoes1:
+                            lista_açoes1.append("[6] Super poder")
+                    else:
+                        Spoder_status1 = False
+                        if "[6] Super poder" in lista_açoes1:
+                            lista_açoes1.remove("[6] Super poder")
 
                     #Opções de ações para o jogador e validação:
                     print()
@@ -86,10 +115,35 @@ while turno > 0:
                     else:
                         if "[3] Poção de veneno" in lista_açoes1:
                             lista_açoes1.remove("[3] Poção de veneno")
+                    
+                    if pcura_status1:
+                        if "[4] Poção de cura" not in lista_açoes1:
+                            lista_açoes1.append("[4] Poção de cura")
+                    else:
+                        if "[4] Poção de cura" in lista_açoes1:
+                            lista_açoes1.remove("[4] Poção de cura")
+                    
+                    if Schamado_status1:
+                        if "[5] Super chamado" not in lista_açoes1:
+                            lista_açoes1.append("[5] Super chamado")
+                    else:
+                        if "[5] Super chamado" in lista_açoes1:
+                            lista_açoes1.remove("[5] Super chamado")
 
                     print(f"Sua vez: {'  '.join(lista_açoes1)}")
                     açao = input()
 
+                    #Verificando se caiu no buffer:
+                    if ativar_buffer_jgd:
+                        if turno <= buffer_fim:
+                            buffer_dano = int(hp_maximo*0.05)
+                            hp1 -= buffer_dano
+                            print(f"{jogador} caiu em BUFFER OVERFLOW!!! Perdeu {buffer_dano} HP!")
+                        else:
+                            print("Buffer Overflow passou!")
+                            ativar_buffer = False
+
+                    #Se o jogador escolher uma opção inválida:
                     if açao not in ["1", "2", "3", "4", "5", "6"]:
                         print("Inválido. Perdeu a vez!")
                         print()
@@ -128,19 +182,69 @@ while turno > 0:
 
                     #Se o jogador escolher poção de veneno:
                     elif açao == "3":
-                        dano_veneno = random.randint(5, 15)
                         #Verificar se ele já não usou:
                         if pveneno_status1:
                             pveneno_status1 = False
+                            dano_veneno = random.randint(5, 15)
                             sob_veneno = True  #ativa o efeito do veneno no pc
                             veneno_fim = turno + 5  #qtd de turnos que o efeito vai durar
                             hp2 -= dano_veneno
-                            print(f"{jogador} usou POÇÃO DE VENENO! {pc} perdeu {dano_veneno} HP")
+                            print(f"{jogador} usou POÇÃO DE VENENO! {pc} perdeu {dano_veneno} HP!")
                             print(f"{jogador} HP: {hp1} | {pc} HP: {hp2}")
                             print()
                         else:
-                            sob_veneno = False
-                            print(f"Você já usou Poção de veneno. Perdeu a vez.")
+                            print(f"Você já usou poção de veneno. Perdeu a vez.")
+                            print()
+                        turno += 1
+                        vez = pc
+
+                    #Se o jogador escolher poção de cura:
+                    elif açao == "4":
+                        #Verificar se ele já não usou:
+                        if pcura_status1:
+                            pcura_status1 = False
+                            cura_poçao = random.randint(15, 25)
+                            if cura_poçao + hp1 > hp_maximo:
+                                hp1 = hp_maximo
+                            else:
+                                hp1 += cura_poçao
+                            print(f"{jogador} usou POÇÃO DE CURA! Se curou em {cura_poçao} HP!")
+                            print(f"{jogador} HP: {hp1} | {pc} HP: {hp2}")
+                            print()
+                        else:
+                            print("Você já usou poção de cura. Perdeu a vez.")
+                            print()
+                        turno += 1
+                        vez = pc
+                    
+                    #Se o jogador escolher super chamado:
+                    elif açao == "5":
+                        #Verificar se ele já não usou:
+                        if Schamado_status1:
+                            Schamado_status1 = False
+                            Evie_dano = random.randint(20, 40)
+                            dano_total = Evie_dano+dano1
+                            hp1 -= dano_total
+                            print(f"{jogador} usou SUPER CHAMADO e chamou Evie Atômica para dar uma surra em {pc}! Dano total: {Evie_dano} HP!")
+                            print(f"{jogador} HP: {hp1} | {pc} HP: {hp2}")
+                            print()
+                        else:
+                            print("Você já usou super chamado. Perdeu a vez.")
+                            print()
+                        turno += 1
+                        vez = pc
+                    
+                    #Se o jogador escolher super poder:
+                    elif açao == "6":
+                        #Verificar se ele pode usar:
+                        if Spoder_status1:
+                            dano_Spoder = dano1 * 5
+                            hp2 -= dano_Spoder
+                            print(f"{jogador} usou SUPER PODER! INIMIGO perdeu {dano_Spoder} HP!")
+                            print(f"{jogador} HP: {hp1} | {pc} HP: {hp2}")
+                            print()
+                        else:
+                            print("Você ainda não pode usar super poder. Perdeu a vez.")
                             print()
                         turno += 1
                         vez = pc
@@ -201,10 +305,10 @@ while turno > 0:
                     print(f"{jogador} venceu!")
                     print("========= FIM DE JOGO =========\n")
                     turno = 1
+
         #Se for jogar com um amigo:
         else:
             print("Mult")
-
 
     #Se o usuário escolher sair:
     else:
