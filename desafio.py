@@ -16,10 +16,10 @@ import random
 turno = 1
 while turno > 0:
     #Criando menu, solicitando opção do usuário e validando:
-    opçao = input("[1] Iniciar jogo [2] Sair\n")
+    opçao = input("[1] Iniciar jogo  [2] Sair\n")
     while opçao != "1" and opçao !="2":
         print("Inválido. Digite a opção numérica correspondente.")
-        opçao = input("[1] Iniciar jogo [2] Sair\n")
+        opçao = input("[1] Iniciar jogo  [2] Sair\n")
 
     #Se o usuário escolher iniciar o jogo:
     if opçao == "1":
@@ -36,12 +36,22 @@ while turno > 0:
         dano2 = max(0, ataque2-defesa1)
         cura1 = random.randint(1,20)
         cura2 = random.randint(1,20)
-
+        
+        #Opções de ações 1:
+        lista_açoes1 = ["[1] Atacar", "[2] Curar"]
+        
+        #Status dos itens especiais (disponível)
+        pveneno_status1 = True
+        pcura1 = True
+        Schamado = True
+    
+        sob_veneno = False  #status do efeito 
+       
         #Perguntar se vai jogar com alguém ou contra o computador e validar a escolha:
-        modo = input("[1] Solo [2] Multipleyer\n")
+        modo = input("[1] Solo  [2] Multipleyer\n")
         while modo != "1" and modo != "2":
             print("Inválido. Digite a opção numérica correspondente.")
-            modo = input("[1] Multipleyer [2] Solo\n")
+            modo = input("[1] Solo  [2] Multipleyer\n")
 
         #Se for jogar contra o pc:
         if modo == "1":
@@ -69,9 +79,20 @@ while turno > 0:
                     print()
                     print("----------")
                     print()
-                    açao = input(f"Sua vez:  [1] Atacar [2] Curar\n")
-                    if açao != "1" and açao != "2":
+                     
+                    if pveneno_status1:
+                        if "[3] Poção de veneno" not in lista_açoes1:
+                            lista_açoes1.append("[3] Poção de veneno")
+                    else:
+                        if "[3] Poção de veneno" in lista_açoes1:
+                            lista_açoes1.remove("[3] Poção de veneno")
+
+                    print(f"Sua vez: {'  '.join(lista_açoes1)}")
+                    açao = input()
+
+                    if açao not in ["1", "2", "3", "4", "5", "6"]:
                         print("Inválido. Perdeu a vez!")
+                        print()
                         vez = pc
 
                     #Se o jogador escolher atacar:
@@ -93,7 +114,7 @@ while turno > 0:
                         vez = pc
 
                     #Se o jogador escolher curar:
-                    else:
+                    elif açao == "2":
                         if cura1 + hp1 > hp_maximo:
                             hp1 = hp_maximo
                         else:
@@ -105,8 +126,38 @@ while turno > 0:
                         turno += 1
                         vez = pc
 
+                    #Se o jogador escolher poção de veneno:
+                    elif açao == "3":
+                        dano_veneno = random.randint(5, 15)
+                        #Verificar se ele já não usou:
+                        if pveneno_status1:
+                            pveneno_status1 = False
+                            sob_veneno = True  #ativa o efeito do veneno no pc
+                            veneno_fim = turno + 5  #qtd de turnos que o efeito vai durar
+                            hp2 -= dano_veneno
+                            print(f"{jogador} usou POÇÃO DE VENENO! {pc} perdeu {dano_veneno} HP")
+                            print(f"{jogador} HP: {hp1} | {pc} HP: {hp2}")
+                            print()
+                        else:
+                            sob_veneno = False
+                            print(f"Você já usou Poção de veneno. Perdeu a vez.")
+                            print()
+                        turno += 1
+                        vez = pc
+
                 #Se a vez for do pc:
                 else:
+                    critico = random.random() < 0.10
+                    
+                    #Verificar se não está sob efeito do veneno:
+                    if sob_veneno:
+                       if turno <= veneno_fim:
+                           hp2 -= dano_veneno 
+                           print(f"{pc} está sob efeito do veneno! Perdeu {dano_veneno} HP!")
+                       else:
+                           sob_veneno = False
+                           print("Veneno passou!")    
+
                     #Pc escolhe a ação:
                     açao = random.choices(["atacar", "curar"], k=1)[0]
 
@@ -159,6 +210,11 @@ while turno > 0:
     else:
         print("Você saiu")
         turno = 0
+
+
+
+
+
 
 
 
