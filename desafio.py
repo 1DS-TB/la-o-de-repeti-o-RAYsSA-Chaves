@@ -23,6 +23,164 @@ while turno > 0:
 
     #Se o usuário escolher iniciar o jogo:
     if opçao == "1":
+
+        #Definindo HP, ataque, defesa, dano e cura dos dois jogadores:
+        hp_maximo = random.randint(200, 1000)
+        hp1 = hp_maximo
+        hp2 = hp_maximo
+        ataque1 = random.randint(1, 50)
+        ataque2 = random.randint(1, 50)
+        defesa1 = random.randint(1, 50)
+        defesa2 = random.randint(1, 50)
+        dano1 = max(0, ataque1-defesa2)
+        dano2 = max(0, ataque2-defesa1)
+        cura1 = random.randint(1,20)
+        cura2 = random.randint(1,20)
+
+        #Perguntar se vai jogar com alguém ou contra o computador e validar a escolha:
+        modo = input("[1] Solo [2] Multipleyer\n")
+        while modo != "1" and modo != "2":
+            print("Inválido. Digite a opção numérica correspondente.")
+            modo = input("[1] Multipleyer [2] Solo\n")
+
+        #Se for jogar contra o pc:
+        if modo == "1":
+
+            jogador = "VOCÊ"
+            pc = "INIMIGO"
+
+            #"Telinha" de início:
+            print()
+            print("========= DUELO DE HERÓIS =========")
+            print(f"{jogador} vs {pc}")
+            print(f"---------- {jogador} ----------\nHP: {hp1}\nAtaque: {ataque1}\nDefesa: {defesa1}\n")
+            print(f"---------- {pc} ----------\nHP: {hp2}\nAtaque: {ataque2}\nDefesa: {defesa2}")
+
+            #Definindo de quem será a vez e dano de cada um:
+            vez = jogador
+            while hp1 > 0 and hp2 > 0:
+                #se a vez for do jogador:
+                if vez == jogador:
+
+                    #Criando efeito de crítico:
+                    critico = random.random() < 0.10  #escolhe um número decimal aleatório entre 0.0 e 1.0
+
+                    #Opções de ações para o jogador e validação:
+                    print()
+                    print("----------")
+                    print()
+                    açao = input(f"Sua vez:  [1] Atacar [2] Curar\n")
+                    if açao != "1" and açao != "2":
+                        print("Inválido. Perdeu a vez!")
+                        vez = pc
+
+                    #Se o jogador escolher atacar:
+                    elif açao == "1":
+                        if critico == True:
+                            print(f"GOLPE CRÍTICO!!! Dano dobrado!")
+                            hp2 -= dano1*2
+                            dano = dano1*2
+                        else:
+                            hp2 -= dano1
+                            dano = dano1
+                        print(f"{jogador} atacou! {pc} perdeu {dano} HP!")
+                        #Exibindo o resultado da ação:
+                        if hp2 < 0:
+                            hp2 = 0  #não vai exibir "HP: -15"
+                        print(f"{jogador} HP: {hp1} | {pc} HP: {hp2}")
+                        print()
+                        turno += 1
+                        vez = pc
+
+                    #Se o jogador escolher curar:
+                    else:
+                        if cura1 + hp1 > hp_maximo:
+                            hp1 = hp_maximo
+                        else:
+                            hp1 += cura1
+                        #Exibindo o resultado da ação:
+                        print(f"{jogador} se curou em {cura1} HP!")
+                        print(f"{jogador} HP: {hp1} | {pc} HP: {hp2}")
+                        print()
+                        turno += 1
+                        vez = pc
+
+                #Se a vez for do pc:
+                else:
+                    #Pc escolhe a ação:
+                    açao = random.choices(["atacar", "curar"], k=1)[0]
+
+                    #Se o pc escolher atacar:
+                    if açao == "atacar":
+                        if critico == True:
+                            print(f"GOLPE CRÍTICO!!! Dano dobrado!")
+                            hp1 -= dano2*2
+                            dano = dano2*2
+                        else:
+                            hp1 -= dano2
+                            dano = dano2
+                        print(f"{pc} atacou! {jogador} perdeu {dano} HP!")
+                        #Exibindo o resultado da ação:
+                        if hp1 < 0:
+                            hp1 = 0
+                        print(f"{jogador} HP: {hp1} | {pc} HP: {hp2}")
+                        turno += 1
+                        vez = jogador
+
+                    #Se o pc escolher curar:
+                    else:
+                        if cura2 + hp2 > hp_maximo:
+                            hp2 = hp_maximo
+                        else:
+                            hp2 += cura2
+                        #Exibindo o resultado da ação:
+                        print(f"{pc} se curou em {cura2} HP!")
+                        print(f"{jogador} HP: {hp1} | {pc} HP: {hp2}")
+                        turno += 1
+                        vez = jogador
+
+                #Quando HP de um dos dois for 0 ou menos:
+                if hp1 <= 0:
+                    print()
+                    print(f"{pc} venceu!")
+                    print("========= FIM DE JOGO =========\n")
+                    turno = 1
+                elif hp2 <= 0:
+                    print()
+                    print(f"{jogador} venceu!")
+                    print("========= FIM DE JOGO =========\n")
+                    turno = 1
+        #Se for jogar com um amigo:
+        else:
+            print("Mult")
+
+
+    #Se o usuário escolher sair:
+    else:
+        print("Você saiu")
+        turno = 0
+
+
+
+
+
+
+
+
+
+import random
+
+#Iniciando o programa:
+turno = 1
+while turno > 0:
+    #Criando menu, solicitando opção do usuário e validando:
+    opçao = input("[1] Iniciar jogo [2] Sair\n")
+    while opçao != "1" and opçao !="2":
+        print("Inválido. Digite a opção numérica correspondente.")
+        opçao = input("[1] Iniciar jogo [2] Sair\n")
+
+    #Se o usuário escolher iniciar o jogo:
+    if opçao == "1":
         #Definindo HP, ataque e defesa dos dois jogadores:
         hp_maximo = random.randint(200, 1000)
         hp1 = hp_maximo

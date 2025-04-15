@@ -52,7 +52,7 @@ while turno > 0:
 
         #Definindo de quem será a vez e dano de cada um:
         vez = jogador
-        while hp1 > 0 and hp2 > 0:
+        while hp1 > 0 and hp2 > 0:  #incia o jogo e só acaba quando um dos dois morre
             if vez == jogador:
                 #Opções de ações para o jogador e validação:
                 print()
@@ -60,11 +60,12 @@ while turno > 0:
                 print()
                 açao = input(f"Sua vez:  [1] Atacar [2] Curar\n")
                 if açao != "1" and açao != "2":
-                   print("Inválido. Perdeu a vez!")
-                   vez = pc
+                    print("Inválido. Perdeu a vez!")
+                    vez = pc
 
                 #Se o jogador escolher atacar:
                 elif açao == "1":
+                    #Calcular dano no pc:
                     hp2 -= dano1
                     print(f"{jogador} atacou! {pc} perdeu {dano1} HP!")
                     #Exibindo o resultado da ação:
@@ -74,49 +75,49 @@ while turno > 0:
                     turno += 1
                     vez = pc
 
-
                 #Se o jogador escolher curar:
                 else:
-                   if cura1 + hp1 > hp_maximo:
-                      hp1 = hp_maximo
-                   else:
-                      hp1 += cura1
-                   #Exibindo o resultado da ação:
-                   print(f"{jogador} se curou em {cura1} HP!")
-                   print(f"{jogador} HP: {hp1} | {pc} HP: {hp2}")
-                   turno += 1
-                   vez = pc
+                    if cura1 + hp1 > hp_maximo:
+                        hp1 = hp_maximo
+                    else:
+                        hp1 += cura1
+                    #Exibindo o resultado da ação:
+                    print(f"{jogador} se curou em {cura1} HP!")
+                    print(f"{jogador} HP: {hp1} | {pc} HP: {hp2}")
+                    turno += 1
+                    vez = pc
 
             #Se a vez for do pc:
             else:
-               #Pc escolhe a ação:
-               açao = random.choices(["atacar", "curar"], k=1)[0]
-               #Escolhe um único elemento (k=1), retornando uma lista; então pega o único elemento dessa lista [0], retornando uma string
+                #Pc escolhe a ação:
+                açao = random.choices(["atacar", "curar"], k=1)[0]
+                #Escolhe um único elemento (k=1), retornando uma lista; então pega o único elemento dessa lista [0], retornando uma string
 
-               #Se o pc escolher atacar:
-               if açao == "atacar":
-                   hp1 -= dano2
-                   print()
-                   print(f"{pc} atacou! {jogador} perdeu {dano2} HP!")
-                   #Exibindo o resultado da ação:
-                   if hp1 < 0:
-                      hp1 = 0
-                   print(f"{jogador} HP: {hp1} | {pc} HP: {hp2}")
-                   turno += 1
-                   vez = jogador
+                #Se o pc escolher atacar:
+                if açao == "atacar":
+                    #Calcular dano no jogador:
+                    hp1 -= dano2
+                    print()
+                    print(f"{pc} atacou! {jogador} perdeu {dano2} HP!")
+                    #Exibindo o resultado da ação:
+                    if hp1 < 0:
+                        hp1 = 0
+                    print(f"{jogador} HP: {hp1} | {pc} HP: {hp2}")
+                    turno += 1
+                    vez = jogador
 
-               #Se o pc escolher curar:
-               else:
-                 if cura2 + hp2 > hp_maximo:
-                    hp2 = hp_maximo
-                 else:
-                    hp2 += cura2
-                 #Exibindo o resultado da ação:
-                 print()
-                 print(f"{pc} se curou em {cura2} HP!")
-                 print(f"{jogador} HP: {hp1} | {pc} HP: {hp2}")
-                 turno += 1
-                 vez = jogador
+                #Se o pc escolher curar:
+                else:
+                    if cura2 + hp2 > hp_maximo:
+                        hp2 = hp_maximo
+                    else:
+                        hp2 += cura2
+                    #Exibindo o resultado da ação:
+                    print()
+                    print(f"{pc} se curou em {cura2} HP!")
+                    print(f"{jogador} HP: {hp1} | {pc} HP: {hp2}")
+                    turno += 1
+                    vez = jogador
 
             #Quando HP de um dos dois for 0 ou menos:
             if hp1 <= 0:
