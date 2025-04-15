@@ -1,4 +1,4 @@
-#Adicionar no jogo de duelo:
+# Adicionar no jogo de duelo:
 '''
 1) Sistema de Crítico: chance de 10% de dar o dobro de dano
 2) 4 itens especiais (usar números para escolher os itens)
@@ -12,19 +12,19 @@
 
 import random
 
-#Iniciando o programa:
+# Iniciando o programa:
 turno = 1
 while turno > 0:
-    #Criando menu, solicitando opção do usuário e validando:
+    # Criando menu, solicitando opção do usuário e validando:
     opçao = input("[1] Iniciar jogo  [2] Sair\n")
-    while opçao != "1" and opçao !="2":
+    while opçao != "1" and opçao != "2":
         print("Inválido. Digite a opção numérica correspondente.")
         opçao = input("[1] Iniciar jogo  [2] Sair\n")
 
-    #Se o usuário escolher iniciar o jogo:
+    # Se o usuário escolher iniciar o jogo:
     if opçao == "1":
 
-        #Definindo HP, ataque, defesa, dano e cura dos dois jogadores:
+        # Definindo HP, ataque, defesa e cura dos dois jogadores:
         hp_maximo = random.randint(200, 1000)
         hp1 = hp_maximo
         hp2 = hp_maximo
@@ -32,32 +32,36 @@ while turno > 0:
         ataque2 = random.randint(1, 50)
         defesa1 = random.randint(1, 50)
         defesa2 = random.randint(1, 50)
-        dano1 = max(0, ataque1-defesa2)
-        dano2 = max(0, ataque2-defesa1)
-        cura1 = random.randint(1,20)
-        cura2 = random.randint(1,20)
-        
-        #Opções de ações 1:
+        cura1 = random.randint(1, 20)
+        cura2 = random.randint(1, 20)
+
+        defesa_inicial1 = defesa1  #pra poder reduzir defesa para 0 mais tarde
+        defesa_inicial2 = defesa2
+
+        # Opções de ações 1:
         lista_açoes1 = ["[1] Atacar", "[2] Curar"]
-        
-        #Status dos itens especiais (disponível)
+
+        #Opções de efeitos:
+        lista_efeitos = ["[1] Buffer Overflow", "[2] Loop", "[3] Tela Azul"]
+
+        #Status dos efeitos (disponíveis):
+        bf_status = True
+        lp_status = True
+        tl_status = True
+        aC_status = False
+
+        #Status dos itens especiais (disponíveis):
         pveneno_status1 = True
         pcura_status1 = True
         Schamado_status1 = True
         Spoder_status1 = False
 
-        sob_veneno = False  #status do efeito do veneno 
+        sob_veneno = False  # status do efeito do veneno
+        sob_bf = False  #status do efeito do buffer
+        sob_tl = False
 
-        turnos_Spoder = random.randint(5, 7)  #o super poder não poderá ser usado vezes seguidas e nem no início
+        turnos_Spoder = random.randint(5, 7)  # o super poder não poderá ser usado vezes seguidas e nem no início
 
-        #Sorteando turno para acontecer um buffer:
-        buffer_turno = random.randint(5, 9)
-        ativar_buffer_jgd = False
-        ativar_buffer_pc = False
-
-        #Sorteando turno para acontecer um loop:
-        loop_turno = random.randint(8, )
-       
         #Perguntar se vai jogar com alguém ou contra o computador e validar a escolha:
         modo = input("[1] Solo  [2] Multipleyer\n")
         while modo != "1" and modo != "2":
@@ -76,25 +80,16 @@ while turno > 0:
             print(f"{jogador} vs {pc}")
             print(f"---------- {jogador} ----------\nHP: {hp1}\nAtaque: {ataque1}\nDefesa: {defesa1}\n")
             print(f"---------- {pc} ----------\nHP: {hp2}\nAtaque: {ataque2}\nDefesa: {defesa2}")
-            
-            vez = jogador  #definindo de quem será a vez:
+
+            vez = jogador  # definindo de quem será a vez:
             while hp1 > 0 and hp2 > 0:
-
-                #Verificando se alguém caiu no buffer:
-                if turno == buffer_turno:
-                    if vez == jogador:
-                        ativar_buffer_jgd = True
-                    else:
-                        ativar_buffer_pc = True
-                    buffer_fim = turno + 3
-
-                #se a vez for do jogador:
+                # se a vez for do jogador:
                 if vez == jogador:
 
-                    #Criando efeito de crítico:
-                    critico = random.random() < 0.10  #escolhe um número decimal aleatório entre 0.0 e 1.0
+                    # Criando efeito de crítico:
+                    critico = random.random() < 0.10  # escolhe um número decimal aleatório entre 0.0 e 1.0
 
-                    #Habilitando/desabilitando o super poder:
+                    # Habilitando/desabilitando o super poder:
                     if turno % turnos_Spoder == 0:
                         Spoder_status1 = True
                         if "[6] Super poder" not in lista_açoes1:
@@ -104,90 +99,94 @@ while turno > 0:
                         if "[6] Super poder" in lista_açoes1:
                             lista_açoes1.remove("[6] Super poder")
 
-                    #Opções de ações para o jogador e validação:
+                    # Opções de ações para o jogador e validação:
                     print()
                     print("----------")
                     print()
-                     
+
                     if pveneno_status1:
                         if "[3] Poção de veneno" not in lista_açoes1:
                             lista_açoes1.append("[3] Poção de veneno")
                     else:
                         if "[3] Poção de veneno" in lista_açoes1:
                             lista_açoes1.remove("[3] Poção de veneno")
-                    
+
                     if pcura_status1:
                         if "[4] Poção de cura" not in lista_açoes1:
                             lista_açoes1.append("[4] Poção de cura")
                     else:
                         if "[4] Poção de cura" in lista_açoes1:
                             lista_açoes1.remove("[4] Poção de cura")
-                    
+
                     if Schamado_status1:
                         if "[5] Super chamado" not in lista_açoes1:
                             lista_açoes1.append("[5] Super chamado")
                     else:
                         if "[5] Super chamado" in lista_açoes1:
                             lista_açoes1.remove("[5] Super chamado")
+                            
+                    if hp1 < hp_maximo*0.25:
+                        if aC_status == False:
+                            if "[4] Acerto de Cache" not in lista_efeitos:
+                                lista_efeitos.append("[4] Acerto de Cache")
+                                aC_status = True
+                        else:
+                            if "[4] Acerto de Cache" in lista_efeitos:
+                                lista_açoes1.remove("[4] Acerto de Cache")
+                                aC_status = False  
+
+                    lista_açoes1.append("[7] Menu de efeitos")
 
                     print(f"Sua vez: {'  '.join(lista_açoes1)}")
                     açao = input()
 
-                    #Verificando se caiu no buffer:
-                    if ativar_buffer_jgd:
-                        if turno <= buffer_fim:
-                            buffer_dano = int(hp_maximo*0.05)
-                            hp1 -= buffer_dano
-                            print(f"{jogador} caiu em BUFFER OVERFLOW!!! Perdeu {buffer_dano} HP!")
-                        else:
-                            print("Buffer Overflow passou!")
-                            ativar_buffer = False
-
-                    #Se o jogador escolher uma opção inválida:
-                    if açao not in ["1", "2", "3", "4", "5", "6"]:
-                        print("Inválido. Perdeu a vez!")
+                    # Se o jogador escolher uma opção inválida:
+                    if açao not in ["1", "2", "3", "4", "5", "6", "7"]:
+                        print("Inválido. Perdeu a vez.")
                         print()
                         vez = pc
 
-                    #Se o jogador escolher atacar:
+                    # Se o jogador escolher atacar:
                     elif açao == "1":
+                        dano1 = max(0, ataque1 - defesa2)
+
                         if critico == True:
                             print(f"GOLPE CRÍTICO!!! Dano dobrado!")
-                            hp2 -= dano1*2
-                            dano = dano1*2
+                            hp2 -= dano1 * 2
+                            dano = dano1 * 2
                         else:
                             hp2 -= dano1
                             dano = dano1
                         print(f"{jogador} atacou! {pc} perdeu {dano} HP!")
-                        #Exibindo o resultado da ação:
+                        # Exibindo o resultado da ação:
                         if hp2 < 0:
-                            hp2 = 0  #não vai exibir "HP: -15"
+                            hp2 = 0  # não vai exibir "HP: -15"
                         print(f"{jogador} HP: {hp1} | {pc} HP: {hp2}")
                         print()
                         turno += 1
                         vez = pc
 
-                    #Se o jogador escolher curar:
+                    # Se o jogador escolher curar:
                     elif açao == "2":
                         if cura1 + hp1 > hp_maximo:
                             hp1 = hp_maximo
                         else:
                             hp1 += cura1
-                        #Exibindo o resultado da ação:
+                        # Exibindo o resultado da ação:
                         print(f"{jogador} se curou em {cura1} HP!")
                         print(f"{jogador} HP: {hp1} | {pc} HP: {hp2}")
                         print()
                         turno += 1
                         vez = pc
 
-                    #Se o jogador escolher poção de veneno:
+                    # Se o jogador escolher poção de veneno:
                     elif açao == "3":
-                        #Verificar se ele já não usou:
+                        # Verificar se ele já não usou:
                         if pveneno_status1:
                             pveneno_status1 = False
                             dano_veneno = random.randint(5, 15)
-                            sob_veneno = True  #ativa o efeito do veneno no pc
-                            veneno_fim = turno + 5  #qtd de turnos que o efeito vai durar
+                            sob_veneno = True  # ativa o efeito do veneno no pc
+                            veneno_fim = turno + 5  # qtd de turnos que o efeito vai durar
                             hp2 -= dano_veneno
                             print(f"{jogador} usou POÇÃO DE VENENO! {pc} perdeu {dano_veneno} HP!")
                             print(f"{jogador} HP: {hp1} | {pc} HP: {hp2}")
@@ -198,9 +197,9 @@ while turno > 0:
                         turno += 1
                         vez = pc
 
-                    #Se o jogador escolher poção de cura:
+                    # Se o jogador escolher poção de cura:
                     elif açao == "4":
-                        #Verificar se ele já não usou:
+                        # Verificar se ele já não usou:
                         if pcura_status1:
                             pcura_status1 = False
                             cura_poçao = random.randint(15, 25)
@@ -216,16 +215,17 @@ while turno > 0:
                             print()
                         turno += 1
                         vez = pc
-                    
-                    #Se o jogador escolher super chamado:
+
+                    # Se o jogador escolher super chamado:
                     elif açao == "5":
-                        #Verificar se ele já não usou:
+                        # Verificar se ele já não usou:
                         if Schamado_status1:
                             Schamado_status1 = False
                             Evie_dano = random.randint(20, 40)
-                            dano_total = Evie_dano+dano1
+                            dano_total = Evie_dano + dano1
                             hp1 -= dano_total
-                            print(f"{jogador} usou SUPER CHAMADO e chamou Evie Atômica para dar uma surra em {pc}! Dano total: {Evie_dano} HP!")
+                            print(
+                                f"{jogador} usou SUPER CHAMADO e chamou Evie Atômica para dar uma surra em {pc}! Dano total: {Evie_dano} HP!")
                             print(f"{jogador} HP: {hp1} | {pc} HP: {hp2}")
                             print()
                         else:
@@ -233,10 +233,10 @@ while turno > 0:
                             print()
                         turno += 1
                         vez = pc
-                    
-                    #Se o jogador escolher super poder:
+
+                    # Se o jogador escolher super poder:
                     elif açao == "6":
-                        #Verificar se ele pode usar:
+                        # Verificar se ele pode usar:
                         if Spoder_status1:
                             dano_Spoder = dano1 * 5
                             hp2 -= dano_Spoder
@@ -249,52 +249,149 @@ while turno > 0:
                         turno += 1
                         vez = pc
 
-                #Se a vez for do pc:
-                else:
-                    critico = random.random() < 0.10
-                    
-                    #Verificar se não está sob efeito do veneno:
-                    if sob_veneno:
-                       if turno <= veneno_fim:
-                           hp2 -= dano_veneno 
-                           print(f"{pc} está sob efeito do veneno! Perdeu {dano_veneno} HP!")
-                       else:
-                           sob_veneno = False
-                           print("Veneno passou!")    
+                    #Se o jogador escolher menu de efeitos:
+                    elif açao == "7":
+                        print("Menu de efeitos:", "  ".join(lista_efeitos))
+                        efeito = input(">>> ")
 
-                    #Pc escolhe a ação:
+                        if efeito not in ["1", "2", "3", "4"]:
+                            print("Inválido. Perdeu a vez")
+                            turno += 1
+                            vez = pc
+                        #Se escolher buffer:
+                        elif efeito == "1":
+                            if bf_status:
+                                bf_status = False
+                                sob_bf = True
+                                bf_limite = turno + 3
+                                lista_efeitos.remove("[1] Buffer Overflow")
+                                bf_dano = int(hp_maximo*0.05)
+                                hp2 -= bf_dano
+                                print(f"{jogador} usou BUFFER OVERFLOW! {pc} perdeu {bf_dano} HP!")
+                                print(f"{jogador} HP: {hp1} | {pc} HP: {hp2}")
+                                print()
+                                vez = pc
+                                turno += 1
+                            else:
+                                print("Buffer Overflow já foi usado. Perdeu a vez.")
+                                print()
+                                vez = pc
+                                turno += 1
+                        #Se escolher loop:
+                        elif efeito == "2":
+                            if lp_status:
+                                lp_status = False
+                                sob_lp = True
+                                lista_efeitos.remove("[2] Loop")
+                                print(f"{jogador} usou LOOP! {pc} perdeu a vez!")
+                                turno += 1
+                            else:
+                                print("Loop já foi usado. Perdeu a vez.")
+                                print()
+                                vez = pc
+                                turno += 1
+                        # Se escolher tela azul:
+                        elif efeito == "3":
+                            if tl_status:
+                                tl_status = False
+                                sob_tl = True
+                                tl_limite = turno + 3
+                                lista_efeitos.remove("[3] Tela Azul")
+                                print(f"{jogador} usou TELA AZUL! Defesa do {pc} reduzida para 0!")
+                                print()
+                                vez = pc
+                                turno += 1
+                            else:
+                                print("Tela Azul já foi usado. Perdeu a vez.")
+                                print()
+                                vez = pc
+                                turno += 1
+                        # Se escolher acerto de cache:
+                        elif efeito == "4":
+                            if hp1 < hp_maximo*0.25:
+                                if aC_status:
+                                    aC_status = False
+                                    lista_efeitos.remove("[4] Acerto de Cache")
+                                    vida_rec = int(hp_maximo*0.30)
+                                    hp1 += vida_rec
+                                    print(f"{jogador} usou ACERTO DE CAHCE! Vida recuperada em {vida_rec} HP!")
+                                    print()
+                                    vez = pc
+                                    turno += 1
+                                else:
+                                    print("Acerto de Cache já foi usado. Perdeu a vez.")
+                                    print()
+                                    vez = pc
+                                    turno += 1
+                            else:
+                                print("Acerto de Cache só pode ser usado quando sua vida for")
+
+                # Se a vez for do pc:
+                else:
+
+                    critico = random.random() < 0.10
+
+                    # Verificar se não está sob efeito do veneno:
+                    if sob_veneno:
+                        if turno <= veneno_fim:
+                            hp2 -= dano_veneno
+                            print(f"{pc} está sob efeito do veneno! Perdeu {dano_veneno} HP!")
+                        else:
+                            sob_veneno = False
+                            print("Veneno passou!")
+                    # Verificar se não está sob efeito do buffer:
+                    if sob_bf:
+                        if turno <= bf_limite:
+                            hp2 -= bf_dano
+                            print(f"{pc} está sob efeito de buffer overflow! Perdeu {bf_dano} HP!")
+                        else:
+                            sob_bf = False
+                            print("Buffer overflow passou!")
+                    # Verificar se está sob efeito da tela azul:
+                    if sob_tl:
+                        if turno <= tl_limite:
+                            defesa2 = 0
+                            print(f"{pc} está sob efeito de tela azul! Defesa = {defesa2}.")
+                        else:
+                            sob_tl = False
+                            defesa2 = defesa_inicial2
+                            print("Tela Azul passou")
+
+                    # Pc escolhe a ação:
                     açao = random.choices(["atacar", "curar"], k=1)[0]
 
-                    #Se o pc escolher atacar:
+                    # Se o pc escolher atacar:
                     if açao == "atacar":
+                        dano2 = max(0, ataque2 - defesa1)
+
                         if critico == True:
                             print(f"GOLPE CRÍTICO!!! Dano dobrado!")
-                            hp1 -= dano2*2
-                            dano = dano2*2
+                            hp1 -= dano2 * 2
+                            dano = dano2 * 2
                         else:
                             hp1 -= dano2
                             dano = dano2
                         print(f"{pc} atacou! {jogador} perdeu {dano} HP!")
-                        #Exibindo o resultado da ação:
+                        # Exibindo o resultado da ação:
                         if hp1 < 0:
                             hp1 = 0
                         print(f"{jogador} HP: {hp1} | {pc} HP: {hp2}")
                         turno += 1
                         vez = jogador
 
-                    #Se o pc escolher curar:
+                    # Se o pc escolher curar:
                     else:
                         if cura2 + hp2 > hp_maximo:
                             hp2 = hp_maximo
                         else:
                             hp2 += cura2
-                        #Exibindo o resultado da ação:
+                        # Exibindo o resultado da ação:
                         print(f"{pc} se curou em {cura2} HP!")
                         print(f"{jogador} HP: {hp1} | {pc} HP: {hp2}")
                         turno += 1
                         vez = jogador
 
-                #Quando HP de um dos dois for 0 ou menos:
+                # Quando HP de um dos dois for 0 ou menos:
                 if hp1 <= 0:
                     print()
                     print(f"{pc} venceu!")
@@ -306,15 +403,14 @@ while turno > 0:
                     print("========= FIM DE JOGO =========\n")
                     turno = 1
 
-        #Se for jogar com um amigo:
+        # Se for jogar com um amigo:
         else:
             print("Mult")
 
-    #Se o usuário escolher sair:
+    # Se o usuário escolher sair:
     else:
         print("Você saiu")
         turno = 0
-
 
 
 
