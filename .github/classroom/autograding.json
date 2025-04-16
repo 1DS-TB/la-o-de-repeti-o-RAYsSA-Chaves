@@ -39,7 +39,7 @@
     },
     {
       "name": "3.1 Verificar exercicio3.py com número negativo",
-      "run": "echo '-3' | python exercicio3.py | grep -q '-3 x 10 = -30' && echo 'OK' || echo 'ERRO'",
+      "run": "echo '-3' | python exercicio3.py | grep -q '3 x 10 = -30' && echo 'OK' || echo 'ERRO'",
       "output": "OK",
       "timeout": 5,
       "points": 5,
@@ -176,7 +176,7 @@
     },
     {
       "name": "10. Verificar exercicio10.py (Números de Kaprekar)",
-      "run": "echo -e '1\\n10000' | python exercicio10.py | grep -q -e '1' -e '9' -e '45' -e '55' -e '99' -e '297' -e '703' -e '999' && echo 'OK' || echo 'ERRO'",
+      "run": "printf '1\n10000\n' | python exercicio10.py | grep -q -e '1' -e '9' -e '45' -e '55' -e '99' -e '297' -e '703' -e '999' && echo 'OK' || echo 'ERRO'",
       "timeout": 10,
       "points": 25,
       "output": "OK",
@@ -184,7 +184,7 @@
     },
     {
       "name": "10.1 Verificar exercicio10.py com intervalo inválido",
-      "run": "echo -e '10000\\n1' | python exercicio10.py | grep -q 'INVALIDO' && echo 'OK' || echo 'ERRO'",
+      "run": "printf '10000\n1\n' | python exercicio10.py | grep -q 'INVALIDO' && echo 'OK' || echo 'ERRO'",
       "output": "OK",
       "timeout": 10,
       "points": 5,
@@ -192,7 +192,7 @@
     },
     {
       "name": "10.2 Verificar exercicio10.py com números negativos",
-      "run": "echo -e '-100\\n100' | python exercicio10.py | grep -q '1' && echo -e '-100\\n100' | python exercicio10.py | grep -q '9' && echo 'OK' || echo 'ERRO'",
+      "run": "printf '-100\n100\n' | python exercicio10.py | grep -q '1' && echo -e '-100\n100' | python exercicio10.py | grep -q '9' && echo 'OK' || echo 'ERRO'",
       "output": "OK",
       "timeout": 10,
       "points": 5,
