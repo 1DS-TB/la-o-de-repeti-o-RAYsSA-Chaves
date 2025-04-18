@@ -118,7 +118,7 @@ while turno == 1:
         print()
 
         # O jogo inicia e só acaba quando um dos dois morre:
-        while hp1 > 0 or hp2 > 0:
+        while hp1 > 0 and hp2 > 0:
 
             #Verificar se os jogadores estão sob efeito do loop:
             if jgd1_sob_lp:
@@ -210,17 +210,6 @@ while turno == 1:
                     print(f"{jogador1} é sua vez:", '  '.join(lista_açoes1))
                     açao = input(">>> ")
 
-                if jgd1_sob_buff:
-                    if turno < bf_limite:
-                        if hp1 - bf_dano < 0:
-                            hp1 = 0
-                        else:
-                            hp1 -= bf_dano
-                        print(f"{vez} está sob Buffer Overflow! Perdeu {bf_dano} HP!")
-                    else:
-                        jgd1_sob_buff = False
-                        print("Buffer Overflow passou!")
-
                 # Verificando se está sob algum efeito:
                 if jgd1_sob_buff:
                     if turno < bf_limite:
@@ -232,7 +221,6 @@ while turno == 1:
                     else:
                         jgd1_sob_buff = False
                         print("Buffer Overflow passou!")
-
 
                 if jgd1_sob_tl:
                     if turno < tl_limite:
@@ -367,11 +355,11 @@ while turno == 1:
                     # Habilitando/desabilitando acerto de cache:
                     if hp2 < hp_maximo*0.25:
                         if not aC_usado:
-                            lista_efeitos2.append("[5] Acerto de Cache")
+                            lista_efeitos2.append("[5] Acerto de Cachê")
                             aC_status2 = True
                         else:
-                            if "[5] Acerto de Cache" in lista_efeitos2:
-                                lista_efeitos2.remove("[5] Acerto de Cache")
+                            if "[5] Acerto de Cachê" in lista_efeitos2:
+                                lista_efeitos2.remove("[5] Acerto de Cachê")
                                 aC_status2 = False
 
                     print(f"{jogador2} é sua vez:", '  '.join(lista_açoes2))
@@ -546,7 +534,7 @@ while turno == 1:
                             turno += 1
                             
                 # Se escolher acerto de cache:
-                elif efeito == "4":
+                elif efeito == "5":
                     if vez == jogador1:
                         if not aC_usado:
                             vida_baixa = hp_maximo*0.25
@@ -790,6 +778,7 @@ while turno == 1:
 
             # Se o jogador escolher super poder:
             elif açao == "7":
+                dano1 = max(0, ataque1 - defesa2)
                 if vez == jogador1:
                     # Verificar se ele pode usar:
                     if Spoder_status1:
@@ -809,6 +798,7 @@ while turno == 1:
                         vez, proximo = proximo, vez
                         turno += 1
                 else:
+                    dano2 = max(0, ataque2 - defesa1)
                     # Verificar se ele pode usar:
                     if Spoder_status2:
                         dano_Spoder = dano2 * 5
