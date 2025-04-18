@@ -80,9 +80,12 @@ while turno == 1:
         jgd2_sob_lp = False
 
         dano_veneno = random.randint(5, 15)
+        veneno_fim = 0
         
         bf_dano = int(hp_maximo*0.05)
         bf_limite = 0
+
+        lp_fim = 0
 
         turnos_Spoder = random.randint(5, 7)  # o item especial "super poder" não poderá ser usado vezes seguidas e nem no início
 
@@ -121,23 +124,16 @@ while turno == 1:
         while hp1 > 0 and hp2 > 0:
 
             #Verificar se os jogadores estão sob efeito do loop:
-            if jgd1_sob_lp:
-                    if turno < lp_fim:
-                        vez = jogador2
-                        proximo = jogador1
-                    else:
-                        jgd1_sob_lp = False
-                        vez = jogador1
-                        proximo = jogador2
-            
-            if jgd2_sob_lp:
-                if turno < lp_fim:
-                    vez = jogador1
-                    proximo = jogador2
-                else:
-                    jgd2_sob_lp = False
-                    vez = jogador2
-                    proximo = jogador1
+            if jgd1_sob_lp and vez == jogador1 and turno < lp_fim:
+                print("{vez} perdeu a vez por causo do efeito do LOOP!")
+                vez, proximo = proximo, vez
+                turno += 1
+                continue  #vai pular completamente o turno do inimigo (escolha de ação, verificação de efeitos, tudo)
+            elif jgd2_sob_lp and vez == jogador2 and turno < lp_fim:
+                print("{vez} perdeu a vez por causo do efeito do LOOP!")
+                vez, proximo = proximo, vez
+                turno += 1
+                continue
 
             # Se a vez for do jogador 1:
             if vez == jogador1:
@@ -410,7 +406,10 @@ while turno == 1:
 
                 elif vez == jogador2:
                     if modo == "1":
-                        efeito = random.choice(lista_efeitos2)
+                        if lista_efeitos2 != []:
+                            efeito = random.choice(lista_efeitos2)
+                        else:
+                            açao = random.choice(lista_açoes2)
                     else: 
                         while açao == "6":
                             print("Menu de efeitos:", "  ".join(lista_efeitos2))
@@ -435,7 +434,7 @@ while turno == 1:
                         if bf_status:
                             bf_status = False
                             jgd2_sob_buff = True  #ativa o efeito no inimigo
-                            bf_limite = turno + 3
+                            bf_limite = turno + 4
                             if hp2 - bf_dano < 0:
                                     hp2 = 0
                             else:
@@ -456,7 +455,7 @@ while turno == 1:
                         if bf_status:
                             bf_status = False
                             jgd1_sob_buff = True
-                            bf_limite = turno + 3
+                            bf_limite = turno + 4
                             if hp1 - bf_dano < 0:
                                 hp1 = 0
                             else:
@@ -481,7 +480,7 @@ while turno == 1:
                             lp_fim = turno + 2
                             print(f"{vez} usou LOOP! {proximo} perdeu a vez!")
                             print()
-                            turno += 2
+                            turno += 1
                         else:
                             print("Loop já foi usado. Perdeu a vez.")
                             print()
@@ -494,8 +493,7 @@ while turno == 1:
                             lp_fim = turno + 2
                             print(f"{vez} usou LOOP! {proximo} perdeu a vez!")
                             print()
-                            turno += 2
-                            vez, proximo = proximo, vez
+                            turno += 1
                         else:
                             print("Loop já foi usado. Perdeu a vez.")
                             print()
@@ -642,7 +640,7 @@ while turno == 1:
                         hp2 += cura
 
                 # Exibindo o resultado da ação:
-                print(f"{jogador1} se curou em {cura} HP!")
+                print(f"{vez} se curou em {cura} HP!")
                 print(f"{jogador1} HP: {hp1} | {jogador2} HP: {hp2}")
                 print()
                 vez, proximo = proximo, vez
@@ -733,7 +731,7 @@ while turno == 1:
 
             # Se ação for usar super chamado:
             elif açao == "5":
-                dano1 = max(0, ataque1 - defesa2)
+                dano1 = max(10, ataque1 - defesa2)
                 if vez == jogador1:
                     # Verificar se ele já não usou:
                     if Schamado_status1:
@@ -755,7 +753,7 @@ while turno == 1:
                         vez, proximo = proximo, vez
                         turno += 1
                 else:
-                    dano2 = max(0, ataque2 - defesa1)
+                    dano2 = max(10, ataque2 - defesa1)
                     # Verificar se ele já não usou:
                     if Schamado_status2:
                         Schamado_status2 = False
@@ -778,7 +776,8 @@ while turno == 1:
 
             # Se o jogador escolher super poder:
             elif açao == "7":
-                dano1 = max(0, ataque1 - defesa2)
+                dano1 = max(10, ataque1 - defesa2)
+                dano2 = max(10, ataque2 - defesa1)
                 if vez == jogador1:
                     # Verificar se ele pode usar:
                     if Spoder_status1:
@@ -787,6 +786,7 @@ while turno == 1:
                             hp2 = 0
                         else:
                             hp2 -= dano_Spoder
+                        Spoder_usado1 = True
                         print(f"{vez} usou SUPER PODER! {proximo} perdeu {dano_Spoder} HP!")
                         print(f"{jogador1} HP: {hp1} | {jogador2} HP: {hp2}")
                         print()
@@ -798,7 +798,6 @@ while turno == 1:
                         vez, proximo = proximo, vez
                         turno += 1
                 else:
-                    dano2 = max(0, ataque2 - defesa1)
                     # Verificar se ele pode usar:
                     if Spoder_status2:
                         dano_Spoder = dano2 * 5
@@ -806,6 +805,7 @@ while turno == 1:
                             hp1 = 0
                         else:
                             hp1 -= dano_Spoder
+                        Spoder_usado2 = True
                         print(f"{vez} usou SUPER PODER! {proximo} perdeu {dano_Spoder} HP!")
                         print(f"{jogador1} HP: {hp1} | {jogador2} HP: {hp2}")
                         print()
