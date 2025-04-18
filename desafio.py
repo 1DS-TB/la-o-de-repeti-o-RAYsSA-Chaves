@@ -101,7 +101,6 @@ while turno == 1:
             jogador2 = "INIMIGO"
 
             lista_açoes2 = ["1", "2", "3", "4", "5", "6"]
-            lista_efeitos2 = ["2", "3", "4"]
 
         # Se for jogar com alguém:
         else:
@@ -275,31 +274,6 @@ while turno == 1:
                         if "5" in lista_açoes2:
                             lista_açoes2.remove("5")
 
-                    # Desabilitando buffer:
-                    if not bf_status:
-                        if "2" in lista_efeitos2:
-                            lista_efeitos2.remove("2")
-                    
-                    # Desabilitando loop:
-                    if not lp_status:
-                        if "3" in lista_efeitos2:
-                            lista_efeitos2.remove("3")
-
-                    # Desabilitando tela azul:
-                    if not tl_status:
-                        if "4" in lista_efeitos2:
-                            lista_efeitos2.remove("4")
-                    
-                    # Habilitando/desabilitando acerto de cache:
-                    if hp2 < hp_maximo*0.25:
-                        if not aC_usado:
-                            lista_efeitos2.append("5")
-                            aC_status2 = True
-                        else:
-                            if "5" in lista_efeitos2:
-                                lista_efeitos2.remove("5")
-                                aC_status2 = False
-
                     açao = random.choice(lista_açoes2)
 
                 else:  # modo multiplayer
@@ -406,10 +380,30 @@ while turno == 1:
 
                 elif vez == jogador2:
                     if modo == "1":
-                        if lista_efeitos2 != []:
-                            efeito = random.choice(lista_efeitos2)
-                        else:
+                        lista_efeitos2 = ["2", "3", "4"]
+                        # Desabilitando buffer:
+                        if not bf_status and "2" in lista_efeitos2:
+                            lista_efeitos2.remove("2") 
+                        # Desabilitando loop:
+                        if not lp_status and "3" in lista_açoes2:
+                            lista_efeitos2.remove("3")
+                        # Desabilitando tela azul:
+                        if not tl_status and "4" in lista_efeitos2:
+                            lista_efeitos2.remove("4")
+                        if hp2 < hp_maximo*0.25 and not aC_usado:
+                            if "5" not in lista_efeitos2:
+                                lista_efeitos2.append("5")
+                                aC_status2 = True
+                            else:
+                                if "5" in lista_efeitos2:
+                                    lista_efeitos2.remove("5")
+                                    aC_status2 = False
+                        if lista_efeitos2 == []:
+                            lista_açoes2.remove("6")
                             açao = random.choice(lista_açoes2)
+                        else:
+                            efeito = random.choice(lista_efeitos2)
+
                     else: 
                         while açao == "6":
                             print("Menu de efeitos:", "  ".join(lista_efeitos2))
@@ -520,7 +514,7 @@ while turno == 1:
                         if tl_status:
                             tl_status = False
                             jgd1_sob_tl = True
-                            tl_limite = turno + 3
+                            tl_limite = turno + 4
                             print(f"{vez} usou TELA AZUL! Defesa de {proximo} reduzida para 0!")
                             print()
                             vez, proximo = proximo, vez
