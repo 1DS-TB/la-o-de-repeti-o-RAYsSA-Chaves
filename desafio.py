@@ -110,7 +110,7 @@ while turno == 1:
                 if turno % turnos_Spoder == 0 and "[7] Super poder" not in lista_açoes1:
                     lista_açoes1.append("[7] Super poder")
                     Spoder_status1 = True
-                if turno % turnos_Spoder != 0 or Spoder_usado1:
+                if turno % turnos_Spoder != 0 and Spoder_usado1:
                     if "[7] Super poder" in lista_açoes1:
                             lista_açoes1.remove("[7] Super poder")
                             Spoder_status1 = False
@@ -199,7 +199,7 @@ while turno == 1:
                     if turno % turnos_Spoder == 0 and "7" not in lista_açoes2:
                         lista_açoes2.append("7")
                         Spoder_status2 = True
-                    if turno % turnos_Spoder != 0 or Spoder_usado2:
+                    if turno % turnos_Spoder != 0 and Spoder_usado2:
                         if "7" in lista_açoes2:
                             lista_açoes2.remove("7")
                             Spoder_status2 = False
@@ -238,13 +238,14 @@ while turno == 1:
                         aC_status2 = False
 
                     açao = random.choice(lista_açoes2)
+                    print(açao)
 
                 else:  # modo multiplayer
                     # Habilitando/desabilitando o super poder:
                     if turno % turnos_Spoder == 0 and "[7] Super poder" not in lista_açoes2:
                         lista_açoes2.append("[7] Super poder")
                         Spoder_status2 = True
-                    if turno % turnos_Spoder != 0 or Spoder_usado2:
+                    if turno % turnos_Spoder != 0 and Spoder_usado2:
                         if "[7] Super poder" in lista_açoes2:
                             lista_açoes2.remove("[7] Super poder")
                             Spoder_status2 = False
@@ -334,11 +335,18 @@ while turno == 1:
 
                 else:
                     if modo == "1":  # contra o pc
-                        if lista_efeitos2 == []:
-                            lista_açoes2.remove("6")
-                            açao = random.choice(lista_açoes2)
-                        else:
-                            efeito = random.choice(lista_efeitos2)
+                        efeitos_validos = []
+                        for e in lista_efeitos2:
+                            if e in ["2", "3", "4", "5"]:
+                                efeitos_validos.append(e)
+                            if not efeitos_validos:
+                                lista_açoes2.remove("6")
+                                açao = random.choice(lista_açoes2)
+                            else:
+                                if "6" not in lista_açoes2:
+                                    lista_açoes2.append("6")
+                                efeito = random.choice(efeitos_validos)
+
                     else:  # multiplayer
                         while açao == "6":
                             print("Menu de efeitos:", "  ".join(lista_efeitos2))
@@ -354,6 +362,7 @@ while turno == 1:
                     print("Inválido. Perdeu a vez.\n")
                     vez, proximo = proximo, vez
                     turno += 1
+                    continue
                                 
                 #Se escolher buffer:
                 elif efeito == "2":
@@ -428,6 +437,7 @@ while turno == 1:
                 print("Inválido. Perdeu a vez.\n")
                 vez, proximo = proximo, vez
                 turno += 1
+                continue
 
             # Se a ação for atacar:
             elif açao == "1":
@@ -528,7 +538,7 @@ while turno == 1:
                         hp2 = max(0, hp2 - dano)
                         Spoder_usado1 = True
                     else:
-                        dano = max(10, ataque1 - defesa2)
+                        dano = max(10, ataque2 - defesa1)
                         dano *= 5
                         hp1 = max(0, hp1 - dano)
                         Spoder_usado2 = True
