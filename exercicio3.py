@@ -3,9 +3,9 @@
 
 import re
 
-n = input("Digite um número inteiro positivo: ")
+n = input("Digite um número inteiro: ")
 
-valido = bool(re.fullmatch(r"[0-9]+", n))  #somente números inteiros positivos
+valido = bool(re.fullmatch(r"-?\d+", n))  #somente números inteiros
 
 if valido == True:
     n = int(n)
