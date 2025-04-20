@@ -29,6 +29,8 @@ valido2 = bool(re.fullmatch(r"[0-9]+", n2))
 
 if valido1 == False or valido2 == False:
     print("INVALIDO")
+elif n1 > n2:
+    print("INVALIDO")
 else:
     #Criando o intervalo e repetição para verificar os números dentro do intervalo:
     n1, n2 = int(n1), int(n2)
