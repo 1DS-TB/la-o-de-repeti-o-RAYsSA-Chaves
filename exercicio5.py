@@ -11,14 +11,11 @@ if valido == False:
 else:
     num = int(num)
     divisores = 0
-    if num <= 1:
-        print(f"{num} não é primo")
-    else: 
-        for i in range(2,num):
-            if num % i == 0:
-                divisores += 1
-        if divisores == 0:
-            print(f"{num} é primo")
-        else:
-            print(f"{num} não é primo")
+    for i in range(1, num+1):
+        if num % i == 0:
+            divisores += 1
+    if divisores == 2:
+        print(f"{num} eh primo")
+    else:
+        print(f"{num} nao eh primo")
 
